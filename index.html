@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>OnlineWebChat</title>
+  <style>
+    /* Full screen + base styles */
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  padding-top: 10px; /* ✅ Add this line */
+  overflow-x: hidden;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to right, #c9a27e, #6b4c3b);
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Make all sections fill available space nicely */
+body > section {
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.15);
+  text-align: center;
+  color: #fff;
+}
+
+/* Titles */
+h1, h2, h3 {
+  margin: 0 0 15px 0;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Paragraph notes */
+.note {
+  color: #fff;
+  font-size: 14px;
+  margin: 10px 0 20px;
+}
+
+/* Inputs */
+input {
+  width: 100%;
+  max-width: 320px;
+  padding: 12px 15px;
+  margin: 10px auto;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  background: #f5e0c3;
+  color: #333;
+  box-sizing: border-box;
+  transition: box-shadow 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  box-shadow: 0 0 8px 2px #8b5e3c;
+}
+
+/* Buttons */
+button {
+  width: 100%;
+  max-width: 320px;
+  padding: 12px 15px;
+  margin: 10px auto;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  background-color: #8b5e3c;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-sizing: border-box;
+}
+
+button:hover {
+  background-color: #6b4c3b;
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+/* Tick icon in success page */
+.tick {
+  font-size: 80px;
+  color: #fff;
+  margin: 20px 0;
+}
+
+/* Friend List container */
+#friendList {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  width: 100%;
+  max-width: 640px;
+  margin: 20px auto 0 auto;
+  box-sizing: border-box;
+  color: #fff;
+}
+
+/* Each friend item */
+#friendList div {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 22px 35px;
+  margin:15px auto;
+  max-width: 600px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: #fff;
+  user-select: none;
+  text-align: center;
+  font-weight: 700;
+}
+
+#friendList div:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Chat messages container */
+#chatMessages {
+  height: 500px;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  margin: -6px 0;
+  border-radius: 8px;
+  border: none;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  color: #fff;
+}
+
+/* Each message bubble */
+#chatMessages div {
+  margin: 8px 0;
+  padding: 10px 14px;
+  border-radius: 15px;
+  max-width: 60%;
+  word-wrap: break-word;
+  font-size: 16px;
+  line-height: 1.3;
+  box-sizing: border-box;
+}
+
+/* Message sent by me */
+#chatMessages .me {
+  background-color: #8b5e3c;
+  color: #fff;
+  margin-left: auto;
+  text-align: right;
+  border-bottom-right-radius: 0;
+}
+
+/* Message sent by friend */
+#chatMessages .friend {
+  background-color: #6b4c3b;
+  color: #fff;
+  margin-right: auto;
+  text-align: left;
+  border-bottom-left-radius: 0;
+}
+
+/* Chat page top nav */
+#chatPage > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 12px 20px;
+  max-width: 640px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+#chatPage > div:first-child button {
+  max-width: 100px;
+  background-color: #8b5e3c;
+  padding: 6px 12px;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+#chatPage > div:first-child button:hover {
+  background-color: #6b4c3b;
+}
+
+/* Add Friend Section */
+#addFriendSection {
+  margin-top: 15px;
+}
+
+/* Chat view container */
+#chatView {
+  max-width: 640px;
+  margin: 20px auto 40px auto;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 9px;
+  border-radius: 12px;
+  backdrop-filter: blur(5px);
+  color: #fff;
+}
+
+/* Chat view header */
+#chatView > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255,255,255,0.15);
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Back button in chat view */
+#chatView > div:first-child button {
+  background-color: #8b5e3c;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#chatView > div:first-child button:hover {
+  background-color: #6b4c3b;
+}
+
+/* Message input and send button container */
+#messageInput {
+  width: calc(100% - 100px);
+  max-width: calc(320px - 100px);
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: none;
+  background: #f5e0c3;
+  color: #333;
+  font-size: 16px;
+  box-sizing: border-box;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+#chatView > input, #chatView > button {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#chatView > button {
+  width: 80px;
+  max-width: 80px;
+  padding: 12px 0;
+  background-color: #8b5e3c;
+  color: #fff;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#chatView > button:hover {
+  background-color: #6b4c3b;
+  transform: scale(1.05);
+}
+
+#chatView > button:active {
+  transform: scale(0.95);
+}
+
+/* Back buttons on nickname and login pages */
+#nicknamePage button[style], #loginPage button[style] {
+  background-color: #888 !important;
+  max-width: 320px;
+  margin-top: 30px;
+}
+
+/* Loading text style */
+#loading {
+  font-size: 16px;
+  color: #fff;
+  margin: 10px 0;
+}
+
+/* Generated ID input style */
+#generatedId {
+  width: 100%;
+  max-width: 320px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: none;
+  background: #f5e0c3;
+  color: #333;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+/* Responsive tweaks for smaller devices */
+@media (width: 480px) {
+  body > section {
+    padding: 20px 0px;
+    border-radius: 8px;
+  }
+  
+  input, button {
+    max-width: 100%;
+  }
+
+  #chatMessages {
+    height: 300px;
+  }
+
+  #friendList {
+    max-height: 200px;
+  }
+}
+  </style>
+</head>
+<body>
+
+<!-- Landing Page -->
+<!-- Landing Page -->
+<section id="landing">
+  <h1 class="typing-text" id="typingHeading"></h1>
+
+  <div class="button-container">
+    <p class="note">No Gmail or number needed. Just tap Create Account, enter Nickname, and start chatting.</p>
+    <button onclick="showNicknamePage()">Create Account</button>
+    <p style="color: #fff;">or</p>
+    <button onclick="showLoginPage()">Already Have Account</button>
+  </div>
+</section>
+<!-- Nickname Page -->
+<section id="nicknamePage" style="display:none;">
+  <h2>Enter your Nickname</h2>
+  <input type="text" id="nicknameInput" placeholder="Nickname" autocomplete="off" />
+  <button onclick="generateUserId()">Done</button>
+  <div id="loading" style="display:none;">⏳ Wait, your ID is generating...</div>
+  <div id="generatedDetails" style="display:none;">
+    <h3>Your ID - Remember it</h3>
+    <input type="text" id="generatedId" readonly />
+    <h3>Create Password</h3>
+    <input type="password" id="createPassword" placeholder="Password" autocomplete="new-password" />
+    <button onclick="finalizeAccount()">Done</button>
+  </div>
+  <button onclick="showLanding()" style="margin-top:30px; background:#888;">Back</button>
+</section>
+
+<!-- Success Page -->
+<section id="successPage" style="display:none;">
+  <div class="tick">✅</div>
+  <h2>Your ID is Created</h2>
+  <button onclick="showLoginPage()">Now Login</button>
+</section>
+
+<!-- Login Page -->
+<section id="loginPage" style="display:none;">
+  <h2>Login Your Account</h2>
+  <input type="text" id="loginId" placeholder="Enter your ID" autocomplete="off" />
+  <input type="password" id="loginPassword" placeholder="Enter your Password" autocomplete="current-password" />
+  <button onclick="loginUser()">Login</button>
+  <p class="note">Note: If you forget your ID/password, just create a new one. No Gmail needed.</p>
+  <button onclick="showLanding()" style="margin-top:30px; background:#888;">Back</button>
+</section>
+
+<!-- Chat Page -->
+<section id="chatPage" style="display:none;">
+
+  <!-- Top Nav Bar -->
+  <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: #c6a87d; color: white; font-weight: bold; border-radius: 8px; max-width: 640px; margin: 0 auto;">
+    <div style="font-size: 20px;">Your Friend</div>
+    <button onclick="toggleAddFriendSection()" style="background: #6f4e37; color: white; border: none; padding: 6px 12px; border-radius: 4px;">Add</button>
+  </div>
+
+  <!-- Add Friend Section -->
+  <div id="addFriendSection" style="display:none; text-align: center; margin-top: 10px;">
+    <input type="text" id="searchFriendId" placeholder="Enter Friend ID" autocomplete="off" />
+    <button onclick="addFriend()">Add</button>
+  </div>
+
+  <!-- Friend List -->
+  <div id="friendList" style="margin-top: 20px;"></div>
+
+  <!-- Chat View -->
+  <div id="chatView" style="display:none; max-width: 640px; margin: 20px auto;">
+    <div style="display:flex; justify-content: space-between; align-items: center; background: #a9746e; padding: 10px; color: white; border-radius: 6px;">
+      <button onclick="backToFriendList()" style="background: #6f4e37; border: none; color: white; padding: 5px 10px; border-radius: 4px;">← Back</button>
+      <div id="chatWith" style="flex: 1; text-align: center;"></div>
+    </div>
+    <div id="chatMessages"></div>
+    <input type="text" id="messageInput" placeholder="Type your message..." autocomplete="off" />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</section>
+
+<!-- Firebase SDK and Logic -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getDatabase, ref, get, set, onValue, off, update, push } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA9pmgthHuuMCE5zq8VLlk8jvgjQjfESWU",
+    authDomain: "online-web-chat-22e51.firebaseapp.com",
+    databaseURL: "https://online-web-chat-22e51-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "online-web-chat-22e51",
+    storageBucket: "online-web-chat-22e51.appspot.com",
+    messagingSenderId: "389702378019",
+    appId: "1:389702378019:web:b53f8d6621c47f8d2c8796",
+    measurementId: "G-M7SXNWGNRQ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  let currentUserId = "";
+  let currentChatFriend = "";
+  let friendsListener = null;
+  let messagesListener = null;
+
+  function showSection(id) {
+    ["landing", "nicknamePage", "successPage", "loginPage", "chatPage"].forEach(sid => {
+      document.getElementById(sid).style.display = sid === id ? "block" : "none";
+    });
+  }
+
+  window.showLanding = () => showSection("landing");
+  window.showNicknamePage = () => {
+    showSection("nicknamePage");
+    document.getElementById("nicknameInput").value = "";
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("generatedDetails").style.display = "none";
+    document.getElementById("generatedId").value = "";
+    document.getElementById("createPassword").value = "";
+  };
+  window.showLoginPage = () => {
+    showSection("loginPage");
+    document.getElementById("loginId").value = "";
+    document.getElementById("loginPassword").value = "";
+  };
+
+  window.generateUserId = () => {
+    const nickname = document.getElementById("nicknameInput").value.trim();
+    if (!nickname) return alert("Please enter your nickname");
+
+    document.getElementById("loading").style.display = "block";
+
+    const firstLetter = nickname[0].toLowerCase();
+    const generateId = () => firstLetter + Math.floor(100 + Math.random() * 900);
+    const checkAndGenerateUniqueId = async () => {
+      let id = generateId();
+      let snap = await get(ref(db, "users/" + id));
+      while (snap.exists()) {
+        id = generateId();
+        snap = await get(ref(db, "users/" + id));
+      }
+      return id;
+    };
+
+    checkAndGenerateUniqueId().then(id => {
+      setTimeout(() => {
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("generatedDetails").style.display = "block";
+        document.getElementById("generatedId").value = id;
+      }, 700);
+    });
+  };
+
+  window.finalizeAccount = async () => {
+    const id = document.getElementById("generatedId").value.trim();
+    const password = document.getElementById("createPassword").value;
+    const nickname = document.getElementById("nicknameInput").value.trim();
+    if (!password) return alert("Please enter a password");
+
+    const userRef = ref(db, "users/" + id);
+    const snap = await get(userRef);
+    if (snap.exists()) {
+      alert("ID already exists, try generating again");
+      return;
+    }
+
+    await set(userRef, { password, nickname });
+    showSection("successPage");
+  };
+
+  window.loginUser = async () => {
+    const id = document.getElementById("loginId").value.trim();
+    const password = document.getElementById("loginPassword").value;
+    if (!id || !password) return alert("Enter ID and password");
+
+    const userRef = ref(db, "users/" + id);
+    const snap = await get(userRef);
+    if (!snap.exists()) return alert("User ID not found");
+
+    const userData = snap.val();
+    if (userData.password !== password) return alert("Password incorrect");
+
+    currentUserId = id;
+    showSection("chatPage");
+    document.getElementById("friendList").style.display = "block";
+    document.getElementById("chatView").style.display = "none";
+    loadFriends();
+  };
+
+  window.toggleAddFriendSection = () => {
+    const sec = document.getElementById("addFriendSection");
+    sec.style.display = sec.style.display === "none" ? "block" : "none";
+  };
+
+  window.addFriend = async () => {
+    const friendId = document.getElementById("searchFriendId").value.trim();
+    if (!friendId || friendId === currentUserId) return alert("Invalid Friend ID");
+
+    const friendRef = ref(db, "users/" + friendId);
+    const snap = await get(friendRef);
+    if (!snap.exists()) return alert("Friend not found");
+
+    await set(ref(db, `friends/${currentUserId}/${friendId}`), true);
+    await set(ref(db, `friends/${friendId}/${currentUserId}`), true);
+
+    alert("Friend added!");
+    document.getElementById("searchFriendId").value = "";
+    document.getElementById("addFriendSection").style.display = "none";
+    loadFriends();
+  };
+function loadFriends() {
+  const friendsRef = ref(db, `friends/${currentUserId}`);
+
+  if (friendsListener) {
+    off(friendsRef, 'value', friendsListener);
+    friendsListener = null; // clear the old listener ref
+  }
+
+  friendsListener = onValue(friendsRef, async snapshot => {
+    const friendListDiv = document.getElementById("friendList");
+    friendListDiv.innerHTML = ""; // Clear the list first
+
+    const friends = snapshot.val();
+    if (!friends) {
+      friendListDiv.innerHTML = "<p>No friends yet. Add some!</p>";
+      return;
+    }
+
+    for (const friendId in friends) {
+      const friendSnap = await get(ref(db, `users/${friendId}`));
+      const friendName = friendSnap.exists() ? friendSnap.val().nickname : friendId;
+
+      const div = document.createElement("div");
+      div.textContent = `${friendName} (${friendId})`;
+      div.onclick = () => openChat(friendId, friendName);
+      friendListDiv.appendChild(div);
+    }
+  });
+}
+
+  window.openChat = (friendId, friendName) => {
+    currentChatFriend = friendId;
+    document.getElementById("chatWith").textContent = `${friendName} (${friendId})`;
+    document.getElementById("chatView").style.display = "block";
+    document.getElementById("friendList").style.display = "none";
+    document.getElementById("chatMessages").innerHTML = "";
+    listenMessages();
+  };
+
+  window.backToFriendList = () => {
+    currentChatFriend = "";
+    document.getElementById("chatView").style.display = "none";
+    document.getElementById("friendList").style.display = "block";
+  };
+
+  function listenMessages() {
+    if (messagesListener) off(ref(db, 'messages/' + currentUserId + '_' + currentChatFriend), 'value', messagesListener);
+    if (messagesListener) off(ref(db, 'messages/' + currentChatFriend + '_' + currentUserId), 'value', messagesListener);
+
+    const messagesRef1 = ref(db, 'messages/' + currentUserId + '_' + currentChatFriend);
+    const messagesRef2 = ref(db, 'messages/' + currentChatFriend + '_' + currentUserId);
+
+    let combinedMessages = {};
+
+    const updateMessages = () => {
+      const chatMessagesDiv = document.getElementById("chatMessages");
+      chatMessagesDiv.innerHTML = "";
+      const sortedKeys = Object.keys(combinedMessages).sort((a,b) => combinedMessages[a].timestamp - combinedMessages[b].timestamp);
+      sortedKeys.forEach(key => {
+        const msg = combinedMessages[key];
+        const div = document.createElement("div");
+        div.textContent = msg.message;
+        div.className = msg.sender === currentUserId ? "me" : "friend";
+        chatMessagesDiv.appendChild(div);
+      });
+      chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
+    };
+
+    messagesListener = onValue(messagesRef1, snapshot => {
+      const msgs = snapshot.val() || {};
+      combinedMessages = {...combinedMessages, ...msgs};
+      updateMessages();
+    });
+
+    onValue(messagesRef2, snapshot => {
+      const msgs = snapshot.val() || {};
+      combinedMessages = {...combinedMessages, ...msgs};
+      updateMessages();
+    });
+  }
+
+  window.sendMessage = async () => {
+    const msgInput = document.getElementById("messageInput");
+    const message = msgInput.value.trim();
+    if (!message) return;
+
+    const messagesRef = ref(db, 'messages/' + currentUserId + '_' + currentChatFriend);
+    const newMsgKey = push(messagesRef).key;
+    await update(ref(db, `messages/${currentUserId}_${currentChatFriend}/${newMsgKey}`), {
+      sender: currentUserId,
+      receiver: currentChatFriend,
+      message,
+      timestamp: Date.now()
+    });
+
+    msgInput.value = "";
+  };
+
+  showLanding();
+  // Typing effect for heading
+window.addEventListener("DOMContentLoaded", () => {
+  const text = "OnlineWebChat";
+  const target = document.getElementById("typingHeading");
+  let index = 0;
+
+  function typeChar() {
+    if (index < text.length) {
+      target.textContent += text.charAt(index);
+      index++;
+      setTimeout(typeChar, 150); // Typing speed
+    }
+  }
+
+  typeChar();
+});
+</script>
+</body>
+</html>
