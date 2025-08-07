@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ydvkundan2005.github.io/Chat_on_web_online/sitemap.xml
