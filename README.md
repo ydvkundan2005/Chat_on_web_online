@@ -2,7 +2,7 @@
 
 Built by @ydvkundan2005 using Firebase, HTML, CSS and JavaScript.
 
-✅ Chat without Gmail  
+✅ Chat without Gmail and freely 
 ✅ Free and Real-Time  
 ✅ Anonymous and Secure
 
