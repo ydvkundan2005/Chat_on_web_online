@@ -1,4 +1,4 @@
-# Anonymous Chat App – No Login Required
+# Anonymous Chat App – No Login Requireds
 
 Built by @ydvkundan2005 using Firebase, HTML, CSS and JavaScript.
 
