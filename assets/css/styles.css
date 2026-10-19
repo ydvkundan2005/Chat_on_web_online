@@ -139,3 +139,223 @@
     @media (width: 480px) {
       #callPreviewVideoLocal, #callPreviewVideoRemote { width:100%; height:220px; display:block; margin-bottom:8px; }
     }
+
+
+/* Quiet premium UI layer — presentation only; existing app logic and IDs stay intact. */
+:root{
+  color-scheme:dark;
+  --bg:#09090a;
+  --surface:#101012;
+  --surface-raised:#151517;
+  --surface-hover:#1c1c1f;
+  --border:#29292d;
+  --border-strong:#3a3a40;
+  --text:#f3f3f1;
+  --muted:#a0a0a6;
+  --subtle:#727279;
+  --accent:#deded8;
+  --accent-ink:#111112;
+  --danger:#d96b6b;
+  --radius:18px;
+  --radius-sm:12px;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+*{box-sizing:border-box}
+html{min-height:100%;width:100%;background:var(--bg);scroll-behavior:smooth}
+body{
+  min-height:100vh;min-height:100dvh;width:100%;margin:0;padding:0;
+  display:flex;flex-direction:column;align-items:stretch;
+  overflow-x:clip;background:
+    radial-gradient(ellipse at 50% -20%,rgba(255,255,255,.055),transparent 52%),
+    var(--bg);
+  color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:15px;line-height:1.55;letter-spacing:-.012em;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+body>section{
+  flex:1 0 auto;width:min(100%,1120px);max-width:1120px;min-width:0;
+  min-height:calc(100vh - 24px);min-height:calc(100dvh - 24px);
+  margin:12px auto;padding:clamp(22px,4vw,52px);
+  display:flex;flex-direction:column;justify-content:center;align-items:stretch;
+  gap:16px;background:transparent;border:1px solid transparent;border-radius:26px;
+  box-shadow:none;text-align:left;color:var(--text);backdrop-filter:none;
+  animation:quiet-enter .35s var(--ease) both;
+}
+body>section[style*="display:none"]{display:none!important}
+h1,h2,h3{margin:0;color:var(--text);font-weight:550;letter-spacing:-.045em;line-height:1.12}
+h1{font-size:clamp(2.7rem,7vw,5.7rem);max-width:780px}
+h2{font-size:clamp(1.8rem,4vw,2.8rem)}
+h3{font-size:1.12rem}
+p{margin:0;color:var(--muted)}
+.note{max-width:420px;margin:4px 0 16px;color:var(--muted);font-size:.93rem;line-height:1.7}
+.typing-text{min-height:1.15em;overflow-wrap:anywhere}
+.button-container{display:flex;flex-direction:column;align-items:flex-start;width:100%;max-width:430px;margin-top:clamp(24px,5vh,56px);gap:10px}
+.button-container p[style]{color:var(--subtle)!important;font-size:.78rem;margin:0 0 2px}
+button,input{
+  font:inherit;letter-spacing:inherit;max-width:100%;min-width:0;
+  -webkit-tap-highlight-color:transparent;
+}
+button{
+  width:auto;min-height:46px;margin:0;padding:12px 18px;border:1px solid var(--border-strong);
+  border-radius:999px;background:var(--surface-raised);color:var(--text);
+  font-size:.92rem;font-weight:550;line-height:1.2;cursor:pointer;
+  box-shadow:none;transition:background .18s var(--ease),border-color .18s var(--ease),color .18s var(--ease),transform .18s var(--ease);
+}
+button:hover{background:var(--surface-hover);border-color:#55555c;transform:translateY(-1px)}
+button:active{transform:translateY(0) scale(.99)}
+button:focus-visible,input:focus-visible,#friendList div:focus-visible,.call-half:focus-visible{outline:2px solid #d8d8d2;outline-offset:3px}
+.button-container button{width:100%;max-width:340px;min-height:52px;text-align:left;padding:16px 20px}
+.button-container button:first-of-type{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.button-container button:first-of-type:hover{background:#fff}
+input{
+  display:block;width:100%;max-width:460px;min-height:50px;margin:8px 0;padding:13px 15px;
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  background:#101012;color:var(--text);font-size:16px;box-shadow:none;
+  transition:border-color .18s var(--ease),background .18s var(--ease);
+}
+input::placeholder{color:#696970;opacity:1}
+input:focus{outline:none;border-color:#66666d;box-shadow:0 0 0 3px rgba(255,255,255,.035);background:#131315}
+input[readonly]{color:#deded8;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em}
+#nicknamePage,#loginPage,#successPage{max-width:580px;margin-inline:auto}
+#nicknamePage>button,#loginPage>button{margin-top:8px}
+#nicknamePage button[style],#loginPage button[style]{background:transparent!important;border-color:var(--border)!important;color:var(--muted)!important;margin-top:8px}
+#generatedDetails{width:100%;max-width:460px;margin-top:18px;padding-top:20px;border-top:1px solid var(--border)}
+#generatedDetails h3{margin-top:12px}
+#loading{color:var(--muted);font-size:.9rem;padding:12px 0}
+.tick{font-size:48px;margin:0;color:var(--text)}
+#successPage{align-items:flex-start}
+#successPage button{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+#loginPage .note{margin-top:10px}
+#chatPage{width:100%;max-width:1440px;min-height:calc(100dvh - 24px);padding:clamp(12px,2vw,26px);display:flex;flex-direction:column;gap:14px}
+#chatPage>div:first-child{
+  width:100%;max-width:none!important;margin:0!important;padding:14px 18px!important;
+  gap:14px;background:var(--surface)!important;border:1px solid var(--border);
+  border-radius:16px!important;color:var(--text)!important;
+}
+#chatPage>div:first-child>div{font-size:16px!important;font-weight:600;letter-spacing:-.025em}
+#chatPage>div:first-child button{width:auto;min-height:40px;max-width:none!important;padding:9px 15px!important;background:var(--surface-raised)!important;color:var(--text)!important;border:1px solid var(--border)!important;border-radius:999px!important}
+#addFriendSection{width:100%;max-width:720px;margin:0 auto!important;padding:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;text-align:left!important;border:1px solid var(--border);border-radius:16px;background:var(--surface)}
+#addFriendSection[style*="display:none"]{display:none!important}
+#addFriendSection input{flex:1 1 220px;max-width:none;margin:0}
+#addFriendSection button{flex:0 0 auto}
+#friendList{
+  width:100%;max-width:none;max-height:none;min-height:120px;margin:0;padding:0;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));align-content:start;gap:10px;
+  overflow-y:auto;color:var(--text)
+}
+#friendList>div{
+  min-width:0;margin:0;padding:18px 20px;border:1px solid var(--border);border-radius:15px;
+  background:var(--surface);color:var(--text);font-weight:500;font-size:.95rem;
+  text-align:left;overflow-wrap:anywhere;transition:background .18s var(--ease),border-color .18s var(--ease);
+}
+#friendList>div:hover{background:var(--surface-raised);border-color:var(--border-strong)}
+#chatView{
+  width:100%;max-width:1040px!important;min-width:0;min-height:0;
+  margin:0 auto!important;padding:clamp(12px,2vw,22px)!important;
+  display:flex;flex-direction:column;gap:12px;
+  border:1px solid var(--border);border-radius:20px;background:var(--surface)!important;
+  box-shadow:0 24px 80px rgba(0,0,0,.18);color:var(--text);
+}
+#chatView[style*="display:none"]{display:none!important}
+#chatView>div:first-child{
+  flex:0 0 auto;min-width:0;gap:12px;padding:10px 0 16px!important;margin:0!important;
+  border-radius:0!important;border:0;border-bottom:1px solid var(--border);
+  background:transparent!important;color:var(--text)!important;
+}
+#chatView>div:first-child button{width:auto;min-height:40px;background:transparent!important;color:var(--muted)!important;border:1px solid var(--border)!important;border-radius:999px!important}
+#chatWith{min-width:0;overflow-wrap:anywhere;font-weight:600;letter-spacing:-.02em}
+.call-bar{width:auto;max-width:none;margin:0;gap:8px;border-radius:12px}
+.call-half{min-height:42px;padding:10px 14px;border:1px solid var(--border);border-radius:11px;background:#141416;color:var(--muted);font-size:.88rem;font-weight:550;transition:background .18s var(--ease),color .18s var(--ease)}
+.call-half:hover{background:#202023;color:var(--text)}
+.call-icon{font-size:15px}
+#callPreview{width:100%;max-width:none;margin:0;padding:8px;display:none;gap:8px;grid-template-columns:repeat(2,minmax(0,1fr));background:#080809;border:1px solid var(--border);border-radius:14px}
+#callPreview[style*="display: block"],#callPreview[style*="display:block"]{display:grid!important}
+#callPreviewVideoLocal,#callPreviewVideoRemote{width:100%;height:clamp(140px,28vw,320px);min-width:0;object-fit:cover;display:block;border:1px solid #242428;border-radius:10px;background:#050505}
+#callPreviewAudioLocal,#callPreviewAudioRemote{display:none}
+.hang-btn{left:50%;bottom:14px;transform:translateX(-50%);width:48px;height:48px;border:1px solid rgba(255,255,255,.22);background:#a94343;box-shadow:0 8px 28px rgba(0,0,0,.4);z-index:2}
+#chatMessages{
+  flex:1 1 auto;width:100%;height:auto;min-height:260px;max-height:min(56vh,680px);
+  margin:0;padding:18px;overflow-y:auto;overscroll-behavior:contain;
+  border:1px solid #222226;border-radius:14px;background:#0b0b0c;color:var(--text);
+  scroll-behavior:smooth;display:flex;flex-direction:column;gap:9px;
+}
+#chatMessages>div{
+  width:fit-content;max-width:min(78%,680px);margin:0;padding:11px 14px;
+  border:1px solid var(--border);border-radius:16px;
+  font-size:.96rem;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;
+}
+#chatMessages .me{align-self:flex-end;margin-left:auto;background:#e6e6e0;color:#161617;border-color:#e6e6e0;border-bottom-right-radius:5px;text-align:left}
+#chatMessages .friend{align-self:flex-start;margin-right:auto;background:#19191c;color:var(--text);border-bottom-left-radius:5px;text-align:left}
+#messageInput{flex:1 1 auto;width:auto;max-width:none;min-width:0;margin:0;padding:13px 16px;background:#141416;border-radius:999px}
+#chatView>input,#chatView>button{display:block;vertical-align:initial}
+#chatView>button{
+  flex:0 0 auto;width:auto;max-width:none;min-height:48px;margin:0;padding:12px 22px;
+  background:var(--accent);color:var(--accent-ink);border:1px solid var(--accent);border-radius:999px;
+}
+#chatView>button:hover{background:#fff;transform:translateY(-1px)}
+#chatView>input#messageInput{display:block}
+#chatView{position:relative}
+#chatView>input#messageInput + button{display:inline-flex;align-items:center;justify-content:center}
+#chatView>input#messageInput{width:calc(100% - 118px);display:inline-block;vertical-align:middle}
+#chatView>input#messageInput + button{width:104px;vertical-align:middle;margin-left:10px}
+#incomingModal{
+  position:fixed;inset:0;left:0;top:0;transform:none;width:100%;height:100%;
+  display:none;align-items:center;justify-content:center;flex-direction:column;
+  padding:24px;background:rgba(0,0,0,.72);backdrop-filter:blur(14px);
+  color:var(--text);border-radius:0;z-index:9999;text-align:center;
+}
+#incomingModal[style*="display: block"],#incomingModal[style*="display:block"]{display:flex!important}
+#incomingModal>div:first-child{width:min(100%,380px);padding:28px 22px 12px;border:1px solid var(--border);border-bottom:0;border-radius:20px 20px 0 0;background:#141416;font-size:1.15rem;font-weight:600}
+#incomingModal>div:last-child{width:min(100%,380px);margin:0!important;padding:12px 22px 24px;border:1px solid var(--border);border-top:0;border-radius:0 0 20px 20px;background:#141416}
+#incomingModal button{min-width:100px;margin:6px;border-radius:999px}
+#acceptCallBtn{background:#e6e6e0!important;color:#141414!important}
+#rejectCallBtn{background:#27272a!important;color:#f0f0ee!important;border:1px solid #3c3c40}
+::selection{background:rgba(230,230,224,.22);color:var(--text)}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#333338;border:2px solid transparent;border-radius:99px;background-clip:padding-box}
+@keyframes quiet-enter{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@media(min-width:1000px){
+  #chatPage{display:grid;grid-template-columns:minmax(260px,340px) minmax(0,1fr);grid-template-rows:auto 1fr;align-items:start;gap:16px}
+  #chatPage>div:first-child{grid-column:1;grid-row:1}
+  #addFriendSection{grid-column:1;grid-row:2;align-self:start}
+  #friendList{grid-column:1;grid-row:2;align-self:start;padding-top:0}
+  #chatView{grid-column:2;grid-row:1 / span 2;width:100%;min-height:min(78vh,860px)}
+  #chatMessages{min-height:320px;max-height:calc(78vh - 280px)}
+}
+@media(max-width:999px){
+  body>section{min-height:calc(100dvh - 16px);margin:8px auto;padding:clamp(18px,4vw,30px)}
+  #chatPage{padding:10px;gap:10px}
+  #chatView{margin:4px auto!important}
+}
+@media(max-width:600px){
+  body>section{border-radius:18px;padding:20px 16px}
+  h1{font-size:clamp(2.55rem,12vw,4rem)}
+  .button-container{margin-top:28px}
+  .button-container button{max-width:none}
+  #chatPage{padding:8px;min-height:calc(100dvh - 16px)}
+  #chatPage>div:first-child{padding:12px!important;border-radius:14px!important}
+  #friendList{grid-template-columns:minmax(0,1fr);gap:8px}
+  #friendList>div{padding:15px 16px;border-radius:13px}
+  #chatView{padding:10px!important;border-radius:16px}
+  #chatMessages{min-height:36dvh;max-height:48dvh;padding:12px}
+  #chatMessages>div{max-width:88%;font-size:.94rem}
+  #callPreview{grid-template-columns:minmax(0,1fr)}
+  #callPreviewVideoLocal,#callPreviewVideoRemote{height:clamp(170px,48vw,280px)}
+  #chatView>input#messageInput{width:calc(100% - 92px);padding:12px 13px}
+  #chatView>input#messageInput + button{width:80px;margin-left:8px;padding:11px 12px}
+  #addFriendSection{padding:12px}
+  #addFriendSection input{flex-basis:100%}
+  #addFriendSection button{width:100%}
+  #nicknamePage,#loginPage,#successPage{padding:24px 18px}
+}
+@media(max-width:360px){
+  #chatPage>div:first-child>div{font-size:14px!important}
+  #chatMessages{padding:9px}
+  #chatMessages>div{max-width:92%;padding:9px 11px}
+  #chatView>input#messageInput{width:calc(100% - 76px);font-size:16px}
+  #chatView>input#messageInput + button{width:66px;margin-left:6px;padding-inline:8px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
