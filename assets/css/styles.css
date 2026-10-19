@@ -359,3 +359,149 @@ input[readonly]{color:#deded8;font-family:ui-monospace,SFMono-Regular,Menlo,mono
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+
+/* Full-screen chat-app refinement — CSS only; preserve all existing IDs and behavior. */
+:root{
+  --bg:#08090b;--surface:#111317;--surface-2:#171a20;--line:#282c34;
+  --text:#f5f6f8;--muted:#9ca3af;--accent:#e9edf5;--accent-ink:#101216;
+  --chat-in:#1b1f27;--chat-out:#dfe6f1;--chat-out-ink:#171a20;
+}
+html,body{width:100%;min-height:100%;margin:0;padding:0;background:var(--bg)}
+body{min-height:100vh;min-height:100dvh;overflow:hidden;background:radial-gradient(ellipse at 50% 0%,#161a22 0%,#08090b 52%);color:var(--text)}
+body>section{
+  width:100%;max-width:100%;min-width:0;min-height:100vh;min-height:100dvh;
+  margin:0;padding:clamp(20px,5vw,48px);border:0;border-radius:0;
+}
+body>section[style*="display:none"]{display:none!important}
+
+/* Welcome and account screens: centered, spacious, app-like. */
+#landing,#nicknamePage,#loginPage,#successPage{
+  width:100%;max-width:100%;min-height:100vh;min-height:100dvh;
+  justify-content:center;align-items:center;text-align:center;gap:18px;
+  padding:clamp(24px,7vw,72px);
+}
+#landing .typing-text{width:100%;max-width:800px;text-align:center;font-size:clamp(2.8rem,11vw,6.8rem);line-height:1.02;letter-spacing:-.065em}
+#landing .button-container{width:min(100%,420px);max-width:420px;align-items:stretch;margin:clamp(22px,5vh,52px) auto 0;gap:12px}
+#landing .note{max-width:360px;margin:0 auto 16px;text-align:center;font-size:1rem;line-height:1.75}
+#landing .button-container button{width:100%;max-width:none;min-height:58px;text-align:center;font-size:1rem}
+#landing .button-container p[style]{text-align:center;margin:2px 0;font-size:.8rem}
+#nicknamePage,#loginPage,#successPage{position:relative}
+#nicknamePage::before,#loginPage::before,#successPage::before{
+  content:"";display:grid;place-items:center;flex:0 0 auto;
+  width:clamp(86px,23vw,112px);height:clamp(86px,23vw,112px);
+  margin:0 auto 8px;border-radius:50%;border:1px solid #3b414d;
+  background:radial-gradient(circle at 35% 25%,#303744 0%,#171b22 58%,#101216 100%);
+  box-shadow:0 18px 48px #0007, inset 0 1px 0 #ffffff12;
+  color:#f3f5f8;font-size:2.2rem;
+}
+#nicknamePage::before{content:"✦"}
+#loginPage::before{content:"◉"}
+#successPage::before{content:"✓"}
+#nicknamePage h2,#loginPage h2,#successPage h2{margin:0;text-align:center;font-size:clamp(1.9rem,7vw,2.6rem)}
+#nicknamePage>input,#loginPage>input,#generatedDetails,#nicknamePage>button,#loginPage>button,#successPage>button{
+  width:min(100%,420px);max-width:420px;margin-left:auto;margin-right:auto;
+}
+#nicknamePage>input,#loginPage>input{min-height:58px;padding:16px 18px;border-radius:16px;font-size:1rem}
+#nicknamePage>button,#loginPage>button,#successPage>button{min-height:56px;font-size:1rem}
+#nicknamePage .note,#loginPage .note{width:min(100%,420px);text-align:center;line-height:1.7}
+#nicknamePage button[style],#loginPage button[style]{margin-top:4px!important}
+#generatedDetails{padding:20px 0 0;border-top:1px solid var(--line);text-align:left}
+#generatedDetails input{max-width:none}
+#successPage{align-items:center}
+#successPage .tick{font-size:0}
+#successPage .tick:after{content:"Account ready";font-size:1rem;color:var(--muted)}
+
+/* Main messenger shell fills the actual viewport instead of floating in a small card. */
+#chatPage{
+  display:flex!important;flex-direction:column;align-items:stretch;gap:0;
+  width:100%;max-width:none;min-width:0;height:100vh;height:100dvh;min-height:0;
+  margin:0;padding:0;overflow:hidden;background:transparent;
+}
+#chatPage>div:first-child{
+  flex:0 0 auto;width:100%;min-height:76px;margin:0!important;padding:14px 18px!important;
+  border:0!important;border-bottom:1px solid var(--line)!important;border-radius:0!important;
+  background:#101216!important;box-shadow:0 8px 24px #0002;
+}
+#chatPage>div:first-child>div{display:flex;align-items:center;gap:12px;font-size:1.1rem!important}
+#chatPage>div:first-child>div:before{
+  content:"";display:inline-block;flex:0 0 42px;width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(145deg,#343b49,#1a1e26);border:1px solid #424958;
+  box-shadow:inset 0 1px 0 #ffffff14;
+}
+#chatPage>div:first-child button{min-height:42px;padding:10px 16px!important;border-radius:14px!important}
+#addFriendSection{flex:0 0 auto;width:calc(100% - 28px);max-width:720px;margin:14px auto!important;padding:12px;border-radius:16px}
+#friendList{
+  flex:1 1 auto;min-height:0;width:100%;max-height:none;overflow-y:auto;
+  padding:14px;align-content:start;grid-template-columns:1fr;gap:10px;
+  overscroll-behavior:contain;
+}
+#friendList>div{
+  display:flex;align-items:center;gap:13px;min-height:76px;padding:15px 16px;
+  border-radius:18px;background:linear-gradient(115deg,#14171d,#101216);
+}
+#friendList>div:before{
+  content:"";display:block;flex:0 0 46px;width:46px;height:46px;border-radius:50%;
+  background:linear-gradient(145deg,#353d4b,#1a1e26);border:1px solid #414957;
+}
+#chatView{
+  flex:1 1 auto;width:100%;max-width:none!important;height:100%;min-height:0;
+  margin:0!important;padding:0!important;gap:0;border:0;border-radius:0;
+  background:var(--bg)!important;box-shadow:none;overflow:hidden;
+}
+#chatView>div:first-child{
+  flex:0 0 auto;min-height:70px;padding:12px 16px!important;
+  border-bottom:1px solid var(--line)!important;background:#101216!important;
+}
+#chatView>div:first-child button{min-height:42px;padding:9px 13px!important}
+#chatWith{font-size:1rem;font-weight:650}
+.call-bar{flex:0 0 auto;margin:10px 14px 0;gap:8px}
+.call-half{min-height:44px;border-radius:13px;background:#14171d}
+#callPreview{flex:0 0 auto;margin:10px 14px 0}
+#chatMessages{
+  flex:1 1 auto;width:100%;min-height:0;height:auto;max-height:none;
+  margin:0;padding:18px 14px 22px;border:0;border-radius:0;background:transparent;
+  gap:12px;overscroll-behavior:contain;
+}
+#chatMessages>div{max-width:min(82%,620px);padding:12px 16px;border-radius:19px;font-size:1rem;line-height:1.5}
+#chatMessages .me{background:var(--chat-out);color:var(--chat-out-ink);border-color:var(--chat-out);border-bottom-right-radius:6px}
+#chatMessages .friend{background:var(--chat-in);color:var(--text);border-color:#282d36;border-bottom-left-radius:6px}
+#chatView>input#messageInput{
+  flex:1 1 0;width:auto;min-width:0;min-height:52px;margin:0;
+  display:block;padding:14px 18px;border:1px solid #303541;border-radius:999px;
+  background:#171a20;font-size:16px;
+}
+#chatView>input#messageInput + button{
+  flex:0 0 54px;width:54px;min-width:54px;height:52px;min-height:52px;
+  margin:0;padding:0;border-radius:50%;font-size:0;
+}
+#chatView>input#messageInput + button:after{content:"➤";font-size:1.25rem;line-height:1}
+#chatView{position:relative}
+#chatView>input#messageInput{margin-left:14px;margin-bottom:14px;width:calc(100% - 82px)}
+#chatView>input#messageInput + button{position:absolute;right:14px;bottom:14px}
+#incomingModal{padding:24px}
+#incomingModal>div:first-child{border-radius:22px 22px 0 0;background:#14171d}
+#incomingModal>div:nth-child(2){width:min(100%,380px);padding:0 22px 24px;border:1px solid var(--line);border-top:0;border-radius:0 0 22px 22px;background:#14171d}
+#incomingModal button{min-height:46px}
+
+/* Comfortable touch targets and safe-area support on phones. */
+@media(max-width:600px){
+  body>section{padding:22px 20px}
+  #landing,#nicknamePage,#loginPage,#successPage{padding:28px 24px}
+  #chatPage{padding-bottom:env(safe-area-inset-bottom)}
+  #chatPage>div:first-child{padding-top:max(12px,env(safe-area-inset-top))!important;min-height:calc(68px + env(safe-area-inset-top))}
+  #chatPage>div:first-child>div{font-size:1rem!important}
+  #friendList{padding:12px}
+  #chatView>div:first-child{padding-left:14px!important;padding-right:14px!important}
+  #chatMessages{padding:16px 12px 20px}
+  #chatMessages>div{max-width:86%;font-size:.97rem}
+  #callPreview{grid-template-columns:1fr}
+  #callPreviewVideoLocal,#callPreviewVideoRemote{height:clamp(150px,28vh,240px)}
+}
+@media(min-width:900px){
+  #chatPage{max-width:1100px;margin:0 auto;border-left:1px solid #1b1e25;border-right:1px solid #1b1e25}
+  #chatView{border-left:1px solid #20232a;border-right:1px solid #20232a}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
