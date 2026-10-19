@@ -50,6 +50,11 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebas
   const localAudioEl = document.getElementById('callPreviewAudioLocal');
   const remoteAudioEl = document.getElementById('callPreviewAudioRemote');
   const hangupCallBtn = document.getElementById('hangupCallBtn');
+  const callOverlay = document.getElementById('callOverlay');
+  const muteCallBtn = document.getElementById('muteCallBtn');
+  const speakerCallBtn = document.getElementById('speakerCallBtn');
+  let microphoneMuted = false;
+  let speakerEnabled = true;
   const incomingModal = document.getElementById('incomingModal');
   const incomingText = document.getElementById('incomingText');
   const acceptCallBtn = document.getElementById('acceptCallBtn');
@@ -554,6 +559,9 @@ function loadFriends() {
   // show preview area UI
   function showPreviewArea(media) {
     callPreview.style.display = 'block';
+    if (callOverlay) callOverlay.classList.add('active');
+    const callTitle = document.getElementById('callPeerName'); if (callTitle) callTitle.textContent = currentCallPeer || 'Calling…';
+    const callStatusText = document.getElementById('callStatusText'); if (callStatusText) callStatusText.textContent = 'Connecting…';
     localVideoEl.style.display = 'none';
     remoteVideoEl.style.display = 'none';
     localAudioEl.style.display = 'none';
@@ -583,6 +591,7 @@ function loadFriends() {
     if (localStream) { try { localStream.getTracks().forEach(t => t.stop()); } catch(e){} localStream = null; }
     // UI reset
     callPreview.style.display = 'none';
+    if (callOverlay) callOverlay.classList.remove('active');
     hangupCallBtn.style.display = 'none';
     callBar.style.display = 'flex';
     incomingModal.style.display = 'none';
@@ -661,7 +670,33 @@ function loadFriends() {
   // hook UI buttons
   audioCallHalf.onclick = () => startCall('audio');
   videoCallHalf.onclick = () => startCall('video');
+  const headerAudioCall = document.getElementById('headerAudioCall');
+  const headerVideoCall = document.getElementById('headerVideoCall');
+  if (headerAudioCall) headerAudioCall.onclick = () => startCall('audio');
+  if (headerVideoCall) headerVideoCall.onclick = () => startCall('video');
   hangupCallBtn.onclick = () => hangupCall();
+  if (muteCallBtn) muteCallBtn.onclick = () => {
+    microphoneMuted = !microphoneMuted;
+    if (localStream) localStream.getAudioTracks().forEach(track => { track.enabled = !microphoneMuted; });
+    muteCallBtn.classList.toggle('active', microphoneMuted);
+    const label = muteCallBtn.querySelector('small'); if (label) label.textContent = microphoneMuted ? 'Unmute' : 'Mute';
+  };
+  if (speakerCallBtn) speakerCallBtn.onclick = () => {
+    speakerEnabled = !speakerEnabled;
+    [remoteAudioEl, remoteVideoEl].forEach(el => { if (el) el.muted = !speakerEnabled; });
+    speakerCallBtn.classList.toggle('active', !speakerEnabled);
+    const label = speakerCallBtn.querySelector('small'); if (label) label.textContent = speakerEnabled ? 'Speaker' : 'Speaker off';
+  };
+  function setBackHistory() { try { history.pushState({ chatApp: true }, ''); } catch(e){} }
+  window.addEventListener('popstate', async () => {
+    if (callOverlay && callOverlay.classList.contains('active')) { await hangupCall(); setBackHistory(); return; }
+    const chat = document.getElementById('chatView');
+    if (chat && getComputedStyle(chat).display !== 'none') { window.backToFriendList(); setBackHistory(); return; }
+    const add = document.getElementById('addFriendSection');
+    if (add && getComputedStyle(add).display !== 'none') { add.style.display = 'none'; setBackHistory(); return; }
+    if (document.getElementById('chatPage') && getComputedStyle(document.getElementById('chatPage')).display !== 'none') { window.showLanding(); setBackHistory(); }
+  });
+  setBackHistory();
 
   // cleanup on leaving page
   window.addEventListener('beforeunload', async () => {

@@ -509,3 +509,56 @@ body>section[style*="display:none"]{display:none!important}
 /* Respect the existing app's inline show/hide state for the chat section. */
 #chatPage[style*="display: none"],#chatPage[style*="display:none"]{display:none!important}
 #chatPage[style*="display: block"],#chatPage[style*="display:block"]{display:flex!important}
+
+
+/* Full-screen messenger layout */
+:root{--m-bg:#080d10;--m-panel:#11191e;--m-panel2:#202c33;--m-line:#29363d;--m-text:#f3f6f7;--m-muted:#9daeb6;--m-green:#21c875}
+html,body{width:100%;height:100%;margin:0;background:var(--m-bg);color:var(--m-text)}
+#chatPage{position:fixed;inset:0;box-sizing:border-box;width:100%;height:100dvh;min-height:0;max-width:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0;overflow:hidden;background:var(--m-bg);border:0;border-radius:0}
+#chatPage>div:first-child{box-sizing:border-box;display:flex;align-items:center;gap:12px;flex:0 0 70px;width:100%;min-height:70px;margin:0!important;padding:10px 16px!important;background:var(--m-panel)!important;border:0!important;border-bottom:1px solid var(--m-line)!important;border-radius:0!important}
+.app-brand,.chat-person{display:flex;align-items:center;gap:11px;min-width:0;flex:1;font-weight:650}
+.avatar-icon{display:inline-block;position:relative;flex:0 0 44px;width:44px;height:44px;border-radius:50%;background:linear-gradient(145deg,#50616c,#202a31);border:1px solid #60727d}
+.avatar-icon:before{content:"";position:absolute;top:7px;left:14px;width:14px;height:14px;border-radius:50%;background:#c1cdd2}
+.avatar-icon:after{content:"";position:absolute;bottom:5px;left:8px;width:26px;height:14px;border-radius:15px 15px 8px 8px;background:#c1cdd2}
+.icon-button{display:inline-grid;place-items:center;flex:0 0 42px;width:42px;height:42px;padding:0!important;border:0!important;border-radius:50%!important;background:transparent!important;color:var(--m-text)!important}
+.icon-button svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.add-friend-toggle{flex-basis:auto;width:auto;padding:0 16px!important;border:1px solid var(--m-line)!important;border-radius:14px!important}
+#addFriendSection{box-sizing:border-box;flex:0 0 auto;width:100%;margin:0!important;padding:12px 14px!important;background:var(--m-panel);border:0;border-bottom:1px solid var(--m-line);border-radius:0}
+#addFriendSection input{box-sizing:border-box;width:100%;min-height:48px;border-radius:14px}
+#addFriendSection button{min-height:46px;border-radius:14px}
+#friendList{box-sizing:border-box;flex:1;min-height:0;max-height:none;width:100%;overflow-y:auto;margin:0!important;padding:8px 10px 20px;display:block;overscroll-behavior:contain}
+#friendList>div{box-sizing:border-box;display:flex;align-items:center;gap:12px;min-height:76px;margin:0;padding:12px 10px;border-bottom:1px solid #202a30;border-radius:0;background:transparent}
+#chatView{position:fixed;inset:0;z-index:20;box-sizing:border-box;display:flex;flex-direction:column;gap:0;width:100%;height:100dvh;max-width:none!important;min-height:0;margin:0!important;padding:0!important;overflow:hidden;background:var(--m-bg)!important;border:0;border-radius:0;box-shadow:none}
+#chatView[style*="display: none"],#chatView[style*="display:none"]{display:none!important}
+#chatView>div:first-child{box-sizing:border-box;display:flex;align-items:center;gap:6px;flex:0 0 70px;width:100%;min-height:70px;padding:8px 8px!important;margin:0!important;background:var(--m-panel)!important;border:0!important;border-bottom:1px solid var(--m-line)!important;border-radius:0!important}
+.back-chat{flex-basis:32px;width:32px;font-size:32px;font-weight:300}
+.chat-person{gap:8px}.chat-person .avatar-icon{width:40px;height:40px;flex-basis:40px}
+#chatWith{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-person small{display:block;margin-top:3px;font-size:11px;color:var(--m-muted)}
+.header-actions{display:flex;gap:0}
+.call-bar{box-sizing:border-box;display:flex;flex:0 0 auto;width:100%;gap:8px;margin:0;padding:7px 12px;background:var(--m-panel);border:0;border-bottom:1px solid var(--m-line);border-radius:0}
+.call-half{display:flex;align-items:center;justify-content:center;gap:8px;flex:1;min-height:42px;border:1px solid var(--m-line);border-radius:12px;background:var(--m-panel2);color:var(--m-text)}
+#callPreview{box-sizing:border-box;flex:0 0 auto;width:100%;max-height:40dvh;margin:0;padding:8px;overflow:hidden;background:#050708;border:0;border-bottom:1px solid var(--m-line);border-radius:0}
+#callPreview[style*="display: block"],#callPreview[style*="display:block"]{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#callPreviewVideoLocal,#callPreviewVideoRemote{width:100%;height:clamp(130px,23dvh,240px);object-fit:cover;border-radius:14px;background:#12191d}
+#chatMessages{box-sizing:border-box;flex:1 1 auto;min-height:0;height:auto;max-height:none;width:100%;margin:0;padding:16px 12px 82px;display:flex;flex-direction:column;gap:8px;overflow-y:auto;overscroll-behavior:contain;background:var(--m-bg);border:0;border-radius:0;scroll-behavior:smooth}
+#chatMessages>div{box-sizing:border-box;max-width:82%;padding:11px 14px;border:1px solid transparent;border-radius:18px;font-size:15px;line-height:1.45;overflow-wrap:anywhere}
+#chatMessages .me{align-self:flex-end;background:#d9fdd3;color:#17221b;border-bottom-right-radius:5px}
+#chatMessages .friend{align-self:flex-start;background:#202c33;color:var(--m-text);border-color:#29363d;border-bottom-left-radius:5px}
+#chatView>input#messageInput{position:absolute;left:12px;right:70px;bottom:calc(10px + env(safe-area-inset-bottom));box-sizing:border-box;width:auto;min-width:0;min-height:50px;padding:13px 16px;border:1px solid #34434a;border-radius:999px;background:#20282e;color:var(--m-text);font-size:16px}
+#chatView>input#messageInput+button{position:absolute;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));display:grid;place-items:center;flex:0 0 50px;width:50px;height:50px;min-width:50px;min-height:50px;margin:0;padding:0;border:0;border-radius:50%;background:var(--m-green);color:#062115;font-size:0}
+#chatView>input#messageInput+button:after{content:"➤";font-size:21px}
+.call-overlay{display:none;position:fixed;inset:0;z-index:1000;box-sizing:border-box;flex-direction:column;align-items:center;justify-content:space-between;padding:calc(12vh + env(safe-area-inset-top)) 24px calc(7vh + env(safe-area-inset-bottom));background:radial-gradient(ellipse at 50% 25%,#24363e,#10191e 50%,#070b0e);color:#fff}
+.call-overlay.active{display:flex}
+.call-status{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+.call-avatar{position:relative;width:112px;height:112px;border-radius:50%;background:linear-gradient(145deg,#50616c,#202a31);border:1px solid #60727d}
+.call-avatar:before{content:"";position:absolute;top:20px;left:38px;width:36px;height:36px;border-radius:50%;background:#c1cdd2}
+.call-avatar:after{content:"";position:absolute;bottom:14px;left:24px;width:64px;height:34px;border-radius:35px 35px 18px 18px;background:#c1cdd2}
+.call-status h2{margin:12px 0 0;font-size:26px;font-weight:600}.call-status p{margin:0;color:#b7c4ca;font-size:14px}
+.call-controls{display:flex;align-items:center;justify-content:center;gap:clamp(12px,5vw,28px);width:100%;max-width:440px}
+.call-control{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-width:68px;min-height:68px;padding:10px;border:0;border-radius:20px;background:#26343b;color:#fff}
+.call-control span{font-size:23px}.call-control small{font-size:12px}.call-control.active{background:#e7f1f5;color:#142027}
+.call-control.hangup-control{min-width:76px;min-height:76px;border-radius:50%;background:#e5484d;color:white}
+#incomingModal{z-index:1100}
+@media(min-width:700px){#chatPage{max-width:900px;margin:0 auto}#chatView{max-width:900px!important;left:50%;transform:translateX(-50%)}}
+@media(max-width:390px){#chatView>div:first-child{gap:3px;padding-inline:5px!important}.chat-person .avatar-icon{width:36px;height:36px;flex-basis:36px}.header-actions .icon-button{width:35px;flex-basis:35px}}
