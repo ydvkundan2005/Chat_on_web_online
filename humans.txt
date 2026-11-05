@@ -6,7 +6,11 @@ Email: itsme.kundan.prasad.yadav@gmail.com
 Last update: 2025-08-07
 Standards: HTML5, CSS3
 Components: React, Node.js, etc.
+<<<<<<< Updated upstream
 Software: VSCode, GitHub and other tools ai agents like chatgpt
+=======
+Software: VSCode, GitHub and other tools ai agents like chatgpt and other all like gemini and claude
+>>>>>>> Stashed changes
 
 /* THANKS */
 Thanks to: Chandan Sah teli
