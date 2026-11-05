@@ -1,15 +1,72 @@
-# Anonymous Chat App No _ Login Requireds
+# Real-time Web Chat
 
-Built by @ydvkundan2005 using Firebase, HTML, CSS and JavaScript.
+A browser-based real-time chat application built with HTML, CSS, JavaScript and Firebase Realtime Database.
 
-✅ Chat without Gmail and also freely 
-✅ Free and Real-Time  
-✅ Anonymous and also Secure
+The project explores user identifiers, chat conversations, real-time message updates and browser-based audio/video calling flows.
 
-![WhatsApp Image 2025-08-07 at 9 05 51 AM](https://github.com/user-attachments/assets/62bbc3e5-18ef-4efd-8b58-98ed1d61eeb8)
-![WhatsApp Image 2025-08-07 at 9 05 51 AM-2](https://github.com/user-attachments/assets/9d615712-d206-47ca-adc5-88ab3d30b84f)
-![WhatsApp Image 2025-08-07 at 9 05 50 AM](https://github.com/user-attachments/assets/b977a064-6056-4d62-80ea-21eba01b801c)
-![WhatsApp Image 2025-08-07 at 9 05 52 AM](https://github.com/user-attachments/assets/a25478c0-bfbf-41aa-b343-75f96f81e9cc)
-![WhatsApp Image 2025-08-07 at 9 05 51 AM-3](https://github.com/user-attachments/assets/e0ec47cc-b20d-4cc6-b504-452071ce16cd)
+## Features represented in the current source
 
-![WhatsApp Image 2025-08-07 at 9 05 52 AM-2](https://github.com/user-attachments/assets/7335b1f6-ada4-45a5-8526-3758194423e7)
+- Nickname-based user onboarding and generated user identifiers.
+- User and conversation data stored through Firebase Realtime Database.
+- Real-time message and call-state listeners.
+- Audio/video calling flow using browser media APIs and WebRTC peer connections.
+- Incoming-call, mute, speaker and hang-up interface controls.
+- Responsive web interface and GitHub Pages deployment workflow.
+
+Feature availability depends on browser permissions, network conditions, Firebase configuration and the behavior of the deployed database rules.
+
+## Technology
+
+| Area | Technology |
+|---|---|
+| Frontend | HTML, CSS, JavaScript |
+| Database and synchronization | Firebase Realtime Database |
+| Real-time media | WebRTC and browser media APIs |
+| Connectivity discovery | STUN configuration in the WebRTC client |
+| Deployment | GitHub Actions / GitHub Pages |
+
+## Run and deploy
+
+This is a static browser project. Review the Firebase configuration in `assets/js/app.js`, configure the corresponding Firebase project and database rules, then serve the repository or use its GitHub Pages deployment workflow.
+
+For local preview:
+
+```bash
+python3 -m http.server 8000
+```
+
+Open `http://localhost:8000` in a browser that supports the required media APIs.
+
+## Security and privacy considerations
+
+This repository should be treated as a development prototype until its authentication, authorization and data handling are independently reviewed.
+
+- Firebase Realtime Database rules are not included in this repository. Public client configuration does not replace server-enforced access rules.
+- Review how user identifiers, passwords, chat messages and call signalling records are stored and accessed.
+- A randomly generated user ID is not proof of identity or authorization.
+- WebRTC media permissions must be granted by the user. Verify signalling authorization and peer identity before using the application with real users.
+- Do not use the current prototype for confidential communication or sensitive personal data without a security review and tested access controls.
+
+## Testing status
+
+The repository does not currently include a dedicated automated test suite. Authentication and authorization, conversation isolation, database rules, call setup/teardown, denied media permissions, reconnects and multiple simultaneous calls need repeatable tests.
+
+## Repository structure
+
+```text
+Chat_on_web_online/
+├── .github/workflows/static.yml
+├── assets/
+│   ├── css/styles.css
+│   └── js/
+│       ├── app.js
+│       └── legacy-globals.js
+├── index.html
+├── robots.txt
+├── sitemap.xml
+└── README.md
+```
+
+## Scope
+
+This project demonstrates browser-based real-time application concepts. It is not represented as a production-secure messaging or calling service.
