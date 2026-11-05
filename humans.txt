@@ -6,7 +6,7 @@ Email: itsme.kundan.prasad.yadav@gmail.com
 Last update: 2025-08-07
 Standards: HTML5, CSS3
 Components: React, Node.js, etc.
-Software: VSCode, GitHub and other tools
+Software: VSCode, GitHub and other tools ai agents
 
 /* THANKS */
 Thanks to: Chandan Sah teli
