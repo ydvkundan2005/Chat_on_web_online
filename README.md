@@ -1,6 +1,6 @@
 # Real-time Web Chat
 
-A browser-based real-time chat application built with HTML, CSS, JavaScript and Firebase Realtime Database.
+A browser based real-time chat application built with HTML, CSS, JavaScript and Firebase Realtime Database.
 
 The project explores user identifiers, chat conversations, real-time message updates and browser-based audio/video calling flows.
 
