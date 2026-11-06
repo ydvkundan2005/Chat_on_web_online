@@ -1,4 +1,4 @@
-# Real-time Web Chat
+# Real-time Web Chat With no Login
 
 A browser based real-time chat application built with HTML, CSS, JavaScript and Firebase Realtime Database.
 
